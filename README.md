@@ -1,5 +1,7 @@
 # screen-lock
 
+![example](./img/screen.png)
+
 ### Prerequisites for building
 
 https://docs.fyne.io/started/
