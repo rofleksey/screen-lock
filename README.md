@@ -1,5 +1,12 @@
+# screen-lock
+
+### Prerequisites for building
+
+https://docs.fyne.io/started/
+
+### Usage
+
 ```text
-Usage:
 -bg string
   background color (rgba hex) (default "FF0000FF")
 -f

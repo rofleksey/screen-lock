@@ -1,4 +1,4 @@
-module screenLock
+module screen-lock
 
 go 1.24
 

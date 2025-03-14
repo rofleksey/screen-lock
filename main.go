@@ -10,15 +10,14 @@ import (
 	"fyne.io/fyne/v2/layout"
 	"log"
 	"os"
-	"screenLock/util"
-	"screenLock/widgets"
-	"strconv"
+	"screen-lock/util"
+	"screen-lock/widgets"
 	"time"
 )
 
-var passFlag = flag.String("p", "", "password")
-var focusFlag = flag.Bool("f", false, "keep focus")
-var msgFlag = flag.String("m", "enter password", "startup message")
+var passFlag = flag.String("p", "", "password (digits 1-9)")
+var focusFlag = flag.Bool("f", false, "keep focus (careful!)")
+var msgFlag = flag.String("m", "", "startup message")
 var bgColorFlag = flag.String("bg", "FF0000FF", "background color (rgba hex)")
 var textColorFlag = flag.String("fg", "00000011", "text color (rgba hex)")
 
@@ -27,16 +26,18 @@ var currentPassword = ""
 func main() {
 	flag.Parse()
 
-	passNum, err := strconv.Atoi(*passFlag)
-	if *passFlag == "" || err != nil || passNum < 0 {
-		log.Println("Invalid password format, should be a number")
+	if *passFlag == "" {
+		log.Println("Password is not set")
 		flag.Usage()
 		os.Exit(1)
 	}
 
-	if *passFlag == "" {
-		flag.Usage()
-		os.Exit(1)
+	for _, r := range []rune(*passFlag) {
+		if r < '1' || r > '9' {
+			log.Printf("Invalid character '%v', all characters must be digits, 1-9", string(r))
+			flag.Usage()
+			os.Exit(1)
+		}
 	}
 
 	bgColor, err := util.ParseColor(*bgColorFlag)
@@ -60,7 +61,7 @@ func main() {
 	if *focusFlag {
 		go func() {
 			for {
-				time.Sleep(100 * time.Millisecond)
+				time.Sleep(200 * time.Millisecond)
 				w.RequestFocus()
 			}
 		}()
